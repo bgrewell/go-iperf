@@ -1,44 +1,47 @@
 package iperf
 
 import (
+	"context"
 	"fmt"
 	"github.com/google/uuid"
 	"io"
+	"time"
 )
 
 func NewServer() *Server {
-	s := &Server{
-	}
+	s := &Server{}
 	s.Id = uuid.New().String()
 	return s
 }
 
 type Server struct {
 	SharedOptions
-	OneOff *bool
-	ExitCode *int
-	Running bool
+	Id           string
+	OneOff       *bool
+	ExitCode     *int
+	Running      bool
 	outputStream io.ReadCloser
-	errorStream io.ReadCloser
+	errorStream  io.ReadCloser
+	cancel       context.CancelFunc
 }
 
 func (s *Server) Start() (err error) {
-	exit := make(chan int, 0)
-	err = Execute(fmt.Sprintf("%s -s", binaryLocation), s.outputStream, s.errorStream, exit)
+	var exit chan int
+	s.outputStream, s.errorStream, exit, s.cancel, err = ExecuteAsyncWithCancel(fmt.Sprintf("%s -s -J", binaryLocation))
 	if err != nil {
 		return err
 	}
 	s.Running = true
 	go func() {
-		ds := DebugScanner{}
+		ds := DebugScanner{Silent: true}
 		ds.Scan(s.outputStream)
 	}()
 	go func() {
-		ds := DebugScanner{}
+		ds := DebugScanner{Silent: true}
 		ds.Scan(s.errorStream)
 	}()
 	go func() {
-		exitCode := <- exit
+		exitCode := <-exit
 		s.ExitCode = &exitCode
 		s.Running = false
 	}()
@@ -46,5 +49,8 @@ func (s *Server) Start() (err error) {
 }
 
 func (s *Server) Stop() {
-
+	if s.Running && s.cancel != nil {
+		s.cancel()
+		time.Sleep(100 * time.Millisecond)
+	}
 }

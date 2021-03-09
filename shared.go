@@ -6,15 +6,20 @@ import (
 	"io"
 )
 
+type TestMode string
+const (
+	MODE_JSON TestMode = "json"
+	MODE_LIVE TestMode = "live"
+)
+
 type SharedOptions struct {
-	Id string
-	Port *int
-	Format *rune
+	Port     *int
+	Format   *rune
 	Interval *int
 }
 
 type DebugScanner struct {
-
+	Silent bool
 }
 
 func (ds *DebugScanner) Scan(buff io.ReadCloser) {
@@ -26,6 +31,8 @@ func (ds *DebugScanner) Scan(buff io.ReadCloser) {
 	scanner.Split(bufio.ScanWords)
 	for scanner.Scan() {
 		text := scanner.Text()
-		fmt.Println(text)
+		if !ds.Silent {
+			fmt.Println(text)
+		}
 	}
 }
