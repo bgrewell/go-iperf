@@ -39,7 +39,7 @@ func main() {
 	}
 
 	// Method 1: Wait for the test to finish by pulling from the 'Done' channel which will block until something is put in or it's closed
-	<- c.Done
+	<-c.Done
 
 	// Method 2: Poll the c.Running state and wait for it to be 'false'
 	//for c.Running {

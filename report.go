@@ -27,13 +27,15 @@ func (si *StreamInterval) String() string {
 }
 
 type StreamIntervalReport struct {
-	Socket        int     `json:"socket"`
-	StartInterval float32 `json:"start"`
-	EndInterval   float32 `json:"end"`
-	Seconds       float32 `json:"seconds"`
-	Bytes         int     `json:"bytes"`
-	BitsPerSecond float64 `json:"bits_per_second"`
-	Omitted       bool    `json:"omitted"`
+	Socket           int     `json:"socket"`
+	StartInterval    float32 `json:"start"`
+	EndInterval      float32 `json:"end"`
+	Seconds          float32 `json:"seconds"`
+	Bytes            int     `json:"bytes"`
+	BitsPerSecond    float64 `json:"bits_per_second"`
+	Retransmissions  int     `json:"retransmissions"`
+	CongestionWindow int     `json:"congestion_window"`
+	Omitted          bool    `json:"omitted"`
 }
 
 func (sir *StreamIntervalReport) String() string {

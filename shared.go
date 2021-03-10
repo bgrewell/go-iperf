@@ -7,6 +7,7 @@ import (
 )
 
 type TestMode string
+
 const (
 	MODE_JSON TestMode = "json"
 	MODE_LIVE TestMode = "live"
