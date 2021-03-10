@@ -10,8 +10,8 @@ func main() {
 
 	includeServer := true
 	proto := "tcp"
-	runTime := 30
-	omitSec := 10
+	runTime := 10
+	omitSec := 0
 	length := "65500"
 
 	c := iperf.NewClient("10.254.100.100")
@@ -22,7 +22,6 @@ func main() {
 	c.SetLength(length)
 	c.SetJSON(false)
 	c.SetIncludeServer(false)
-	c.SetTimeSec(20)
 	c.SetStreams(2)
 	reports := c.SetModeLive()
 

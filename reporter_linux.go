@@ -7,6 +7,7 @@ import (
 	"log"
 	"strconv"
 	"strings"
+	"time"
 )
 
 /*
@@ -44,9 +45,10 @@ Connecting to host 10.254.100.100, port 5201
 iperf Done.
 
 */
-
+//TODO: NEED TO UPDATE WINDOWS IMPLEMENTATION ALSO!!!!!
 func (r *Reporter) runLogProcessor() {
-	tailer, err := tail.TailFile(r.LogFile, tail.Config{
+	var err error
+	r.tailer, err = tail.TailFile(r.LogFile, tail.Config{
 		Follow:    true,
 		ReOpen:    true,
 		Poll:      true, // on linux we don't need to poll as the fsnotify works properly
@@ -55,69 +57,73 @@ func (r *Reporter) runLogProcessor() {
 	if err != nil {
 		log.Fatalf("failed to tail log file: %v", err)
 	}
-	for line := range tailer.Lines {
-		// TODO: For now this only cares about individual streams it ignores the sum lines
-		if len(line.Text) > 5 {
-			id := line.Text[1:4]
-			stream, err := strconv.Atoi(strings.TrimSpace(id))
-			if err != nil {
-				continue
-			}
-			fields := strings.Fields(line.Text[5:])
-			if len(fields) >= 9 {
-				if fields[0] == "local" {
+
+	for {
+		select {
+			case line := <- r.tailer.Lines:
+				if line == nil {
 					continue
 				}
-				timeFields := strings.Split(fields[0], "-")
-				start, err := strconv.ParseFloat(timeFields[0], 32)
-				if err != nil {
-					log.Printf("failed to convert start time: %s\n", err)
+				if len(line.Text) > 5 {
+					id := line.Text[1:4]
+					stream, err := strconv.Atoi(strings.TrimSpace(id))
+					if err != nil {
+						continue
+					}
+					fields := strings.Fields(line.Text[5:])
+					if len(fields) >= 9 {
+						if fields[0] == "local" {
+							continue
+						}
+						timeFields := strings.Split(fields[0], "-")
+						start, err := strconv.ParseFloat(timeFields[0], 32)
+						if err != nil {
+							log.Printf("failed to convert start time: %s\n", err)
+						}
+						end, err := strconv.ParseFloat(timeFields[1], 32)
+						transferedStr := fmt.Sprintf("%s%s", fields[2], fields[3])
+						transferedBytes, err := conversions.StringBitRateToInt(transferedStr)
+						if err != nil {
+							log.Printf("failed to convert units: %s\n", err)
+						}
+						transferedBytes = transferedBytes / 8
+						rateStr := fmt.Sprintf("%s%s", fields[4], fields[5])
+						rate, err := conversions.StringBitRateToInt(rateStr)
+						if err != nil {
+							log.Printf("failed to convert units: %s\n", err)
+						}
+						retrans, err := strconv.Atoi(fields[6])
+						if err != nil {
+							log.Printf("failed to convert units: %s\n", err)
+						}
+						cwndStr := fmt.Sprintf("%s%s", fields[7], fields[8])
+						cwnd, err := conversions.StringBitRateToInt(cwndStr)
+						if err != nil {
+							log.Printf("failed to convert units: %s\n", err)
+						}
+						cwnd = cwnd / 8
+						omitted := false
+						if len(fields) >= 10 && fields[9] == "(omitted)" {
+							omitted = true
+						}
+						report := &StreamIntervalReport{
+							Socket:           stream,
+							StartInterval:    float32(start),
+							EndInterval:      float32(end),
+							Seconds:          float32(end - start),
+							Bytes:            int(transferedBytes),
+							BitsPerSecond:    float64(rate),
+							Retransmissions:  retrans,
+							CongestionWindow: int(cwnd),
+							Omitted:          omitted,
+						}
+						r.ReportingChannel <- report
+					}
 				}
-				end, err := strconv.ParseFloat(timeFields[1], 32)
-				transferedStr := fmt.Sprintf("%s%s", fields[2], fields[3])
-				transferedBytes, err := conversions.StringBitRateToInt(transferedStr)
-				if err != nil {
-					log.Printf("failed to convert units: %s\n", err)
+			case <- time.After(1 * time.Second):
+				if !r.running {
+					return
 				}
-				transferedBytes = transferedBytes / 8
-				rateStr := fmt.Sprintf("%s%s", fields[4], fields[5])
-				rate, err := conversions.StringBitRateToInt(rateStr)
-				if err != nil {
-					log.Printf("failed to convert units: %s\n", err)
-				}
-				retrans, err := strconv.Atoi(fields[6])
-				if err != nil {
-					log.Printf("failed to convert units: %s\n", err)
-				}
-				cwndStr := fmt.Sprintf("%s%s", fields[7], fields[8])
-				cwnd, err := conversions.StringBitRateToInt(cwndStr)
-				if err != nil {
-					log.Printf("failed to convert units: %s\n", err)
-				}
-				cwnd = cwnd / 8
-				omitted := false
-				if len(fields) >= 10 && fields[9] == "(omitted)" {
-					omitted = true
-				}
-				report := &StreamIntervalReport{
-					Socket:           stream,
-					StartInterval:    float32(start),
-					EndInterval:      float32(end),
-					Seconds:          float32(end - start),
-					Bytes:            int(transferedBytes),
-					BitsPerSecond:    float64(rate),
-					Retransmissions:  retrans,
-					CongestionWindow: int(cwnd),
-					Omitted:          omitted,
-				}
-				r.ReportingChannel <- report
-			}
-		}
-
-		if !r.running {
-			fmt.Println("reporter is finished. exiting")
-			close(r.ReportingChannel)
-			return
 		}
 	}
 }
