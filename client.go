@@ -65,7 +65,7 @@ type Client struct {
 	Id            string `json:"id" yaml:"id" xml:"id"`
 	Running       bool   `json:"running" yaml:"running" xml:"running"`
 	Done          chan bool `json:"-" yaml:"-" xml:"-"`
-	Options       *ClientOptions `json:"Options" yaml:"Options" xml:"Options"`
+	Options       *ClientOptions `json:"options" yaml:"options" xml:"options"`
 	exitCode      *int
 	report        *TestReport
 	outputStream  io.ReadCloser
