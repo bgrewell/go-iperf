@@ -49,7 +49,7 @@ func (r *Reporter) runLogProcessor() {
 	tailer, err := tail.TailFile(r.LogFile, tail.Config{
 		Follow:    true,
 		ReOpen:    true,
-		Poll:      true,
+		Poll:      false, // on linux we don't need to poll as the fsnotify works properly
 		MustExist: true,
 	})
 	if err != nil {
