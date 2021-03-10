@@ -12,24 +12,26 @@ func NewServer() *Server {
 	defaultPort := 5201
 	defaultInterval := 1
 	s := &Server{
-		SharedOptions: SharedOptions{
-			Port:     &defaultPort,
-			Interval: &defaultInterval,
-		},
+		Port:     &defaultPort,
+		Interval: &defaultInterval,
 	}
 	s.Id = uuid.New().String()
 	return s
 }
 
 type Server struct {
-	SharedOptions
-	Id           string
-	OneOff       *bool
-	ExitCode     *int
-	Running      bool
-	outputStream io.ReadCloser
-	errorStream  io.ReadCloser
-	cancel       context.CancelFunc
+	Id            string             `json:"id" yaml:"id" xml:"id"`
+	OneOff        *bool              `json:"one_off" yaml:"one_off" xml:"one_off"`
+	ExitCode      *int               `json:"exit_code" yaml:"exit_code" xml:"exit_code"`
+	Port          *int               `json:"port" yaml:"port" xml:"port"`
+	Format        *rune              `json:"format" yaml:"format" xml:"format"`
+	Interval      *int               `json:"interval" yaml:"interval" xml:"interval"`
+	JSON          *bool              `json:"json" yaml:"json" xml:"json"`
+	LogFile       *string            `json:"log_file" yaml:"log_file" xml:"log_file"`
+	Running       bool               `json:"running" yaml:"running" xml:"running"`
+	outputStream  io.ReadCloser      `json:"output_stream" yaml:"output_stream" xml:"output_stream"`
+	errorStream   io.ReadCloser      `json:"error_stream" yaml:"error_stream" xml:"error_stream"`
+	cancel        context.CancelFunc `json:"cancel" yaml:"cancel" xml:"cancel"`
 }
 
 func (s *Server) Start() (err error) {

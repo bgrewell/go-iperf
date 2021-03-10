@@ -13,14 +13,6 @@ const (
 	MODE_LIVE TestMode = "live"
 )
 
-type SharedOptions struct {
-	Port     *int
-	Format   *rune
-	Interval *int
-	JSON     *bool
-	LogFile  *string
-}
-
 type DebugScanner struct {
 	Silent bool
 }

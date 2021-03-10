@@ -21,9 +21,7 @@ func NewClient(host string) *Client {
 	streams := 1
 	c := &Client{
 		options: &ClientOptions{
-			SharedOptions: SharedOptions{
-				JSON: &json,
-			},
+			JSON:    &json,
 			Proto:   &proto,
 			TimeSec: &time,
 			Length:  &length,
@@ -37,46 +35,54 @@ func NewClient(host string) *Client {
 }
 
 type ClientOptions struct {
-	SharedOptions
-	Host          *string
-	Proto         *Protocol
-	Bandwidth     *string
-	TimeSec       *int
-	Bytes         *string
-	BlockCount    *string
-	Length        *string
-	Streams       *int
-	Reverse       *bool
-	Window        *string
-	MSS           *int
-	NoDelay       *bool
-	Version4      *bool
-	Version6      *bool
-	TOS           *int
-	ZeroCopy      *bool
-	OmitSec       *int
-	Prefix        *string
-	IncludeServer *bool
+	Port          *int      `json:"port" yaml:"port" xml:"port"`
+	Format        *rune     `json:"format" yaml:"format" xml:"format"`
+	Interval      *int      `json:"interval" yaml:"interval" xml:"interval"`
+	JSON          *bool     `json:"json" yaml:"json" xml:"json"`
+	LogFile       *string   `json:"log_file" yaml:"log_file" xml:"log_file"`
+	Host          *string   `json:"host" yaml:"host" xml:"host"`
+	Proto         *Protocol `json:"proto" yaml:"proto" xml:"proto"`
+	Bandwidth     *string   `json:"bandwidth" yaml:"bandwidth" xml:"bandwidth"`
+	TimeSec       *int      `json:"time_sec" yaml:"time_sec" xml:"time_sec"`
+	Bytes         *string   `json:"bytes" yaml:"bytes" xml:"bytes"`
+	BlockCount    *string   `json:"block_count" yaml:"block_count" xml:"block_count"`
+	Length        *string   `json:"length" yaml:"length" xml:"length"`
+	Streams       *int      `json:"streams" yaml:"streams" xml:"streams"`
+	Reverse       *bool     `json:"reverse" yaml:"reverse" xml:"reverse"`
+	Window        *string   `json:"window" yaml:"window" xml:"window"`
+	MSS           *int      `json:"mss" yaml:"mss" xml:"mss"`
+	NoDelay       *bool     `json:"no_delay" yaml:"no_delay" xml:"no_delay"`
+	Version4      *bool     `json:"version_4" yaml:"version_4" xml:"version_4"`
+	Version6      *bool     `json:"version_6" yaml:"version_6" xml:"version_6"`
+	TOS           *int      `json:"tos" yaml:"tos" xml:"tos"`
+	ZeroCopy      *bool     `json:"zero_copy" yaml:"zero_copy" xml:"zero_copy"`
+	OmitSec       *int      `json:"omit_sec" yaml:"omit_sec" xml:"omit_sec"`
+	Prefix        *string   `json:"prefix" yaml:"prefix" xml:"prefix"`
+	IncludeServer *bool     `json:"include_server" yaml:"include_server" xml:"include_server"`
 }
 
 type Client struct {
-	Id            string
-	Running       bool
-	Done          chan bool
-	options       *ClientOptions
-	exitCode      *int
-	report        *TestReport
-	outputStream  io.ReadCloser
-	errorStream   io.ReadCloser
-	cancel        context.CancelFunc
-	mode          TestMode
-	live          bool
-	reportingChan chan *StreamIntervalReport
-	reportingFile string
+	Id            string                     `json:"id" yaml:"id" xml:"id"`
+	Running       bool                       `json:"running" yaml:"running" xml:"running"`
+	Done          chan bool                  `json:"done" yaml:"done" xml:"done"`
+	options       *ClientOptions             `json:"options" yaml:"options" xml:"options"`
+	exitCode      *int                       `json:"exit_code" yaml:"exit_code" xml:"exit_code"`
+	report        *TestReport                `json:"report" yaml:"report" xml:"report"`
+	outputStream  io.ReadCloser              `json:"output_stream" yaml:"output_stream" xml:"output_stream"`
+	errorStream   io.ReadCloser              `json:"error_stream" yaml:"error_stream" xml:"error_stream"`
+	cancel        context.CancelFunc         `json:"cancel" yaml:"cancel" xml:"cancel"`
+	mode          TestMode                   `json:"mode" yaml:"mode" xml:"mode"`
+	live          bool                       `json:"live" yaml:"live" xml:"live"`
+	reportingChan chan *StreamIntervalReport `json:"reporting_chan" yaml:"reporting_chan" xml:"reporting_chan"`
+	reportingFile string                     `json:"reporting_file" yaml:"reporting_file" xml:"reporting_file"`
 }
 
 func (c *Client) LoadOptionsJSON(jsonStr string) (err error) {
 	return json.Unmarshal([]byte(jsonStr), c.options)
+}
+
+func (c *Client) LoadOptions(options *ClientOptions) {
+	c.options = options
 }
 
 func (c *Client) commandString() (cmd string, err error) {
