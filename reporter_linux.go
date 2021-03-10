@@ -45,13 +45,12 @@ Connecting to host 10.254.100.100, port 5201
 iperf Done.
 
 */
-//TODO: NEED TO UPDATE WINDOWS IMPLEMENTATION ALSO!!!!!
 func (r *Reporter) runLogProcessor() {
 	var err error
 	r.tailer, err = tail.TailFile(r.LogFile, tail.Config{
 		Follow:    true,
 		ReOpen:    true,
-		Poll:      true, // on linux we don't need to poll as the fsnotify works properly
+		Poll:      false, // on linux we don't need to poll as the fsnotify works properly
 		MustExist: true,
 	})
 	if err != nil {
@@ -120,7 +119,7 @@ func (r *Reporter) runLogProcessor() {
 						r.ReportingChannel <- report
 					}
 				}
-			case <- time.After(1 * time.Second):
+			case <- time.After(100 * time.Millisecond):
 				if !r.running {
 					return
 				}

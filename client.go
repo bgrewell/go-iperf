@@ -492,7 +492,6 @@ func (c *Client) Start() (err error) {
 	if err != nil {
 		return err
 	}
-	fmt.Println(cmd)
 	var exit chan int
 	c.outputStream, c.errorStream, exit, c.cancel, err = ExecuteAsyncWithCancel(cmd)
 	if err != nil {
