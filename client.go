@@ -20,7 +20,7 @@ func NewClient(host string) *Client {
 	length := "128KB"
 	streams := 1
 	c := &Client{
-		options: &ClientOptions{
+		Options: &ClientOptions{
 			JSON:    &json,
 			Proto:   &proto,
 			TimeSec: &time,
@@ -62,121 +62,121 @@ type ClientOptions struct {
 }
 
 type Client struct {
-	Id            string                     `json:"id" yaml:"id" xml:"id"`
-	Running       bool                       `json:"running" yaml:"running" xml:"running"`
-	Done          chan bool                  `json:"done" yaml:"done" xml:"done"`
-	options       *ClientOptions             `json:"options" yaml:"options" xml:"options"`
-	exitCode      *int                       `json:"exit_code" yaml:"exit_code" xml:"exit_code"`
-	report        *TestReport                `json:"report" yaml:"report" xml:"report"`
-	outputStream  io.ReadCloser              `json:"output_stream" yaml:"output_stream" xml:"output_stream"`
-	errorStream   io.ReadCloser              `json:"error_stream" yaml:"error_stream" xml:"error_stream"`
-	cancel        context.CancelFunc         `json:"cancel" yaml:"cancel" xml:"cancel"`
-	mode          TestMode                   `json:"mode" yaml:"mode" xml:"mode"`
-	live          bool                       `json:"live" yaml:"live" xml:"live"`
-	reportingChan chan *StreamIntervalReport `json:"reporting_chan" yaml:"reporting_chan" xml:"reporting_chan"`
-	reportingFile string                     `json:"reporting_file" yaml:"reporting_file" xml:"reporting_file"`
+	Id            string `json:"id" yaml:"id" xml:"id"`
+	Running       bool   `json:"running" yaml:"running" xml:"running"`
+	Done          chan bool
+	Options       *ClientOptions `json:"Options" yaml:"Options" xml:"Options"`
+	exitCode      *int
+	report        *TestReport
+	outputStream  io.ReadCloser
+	errorStream   io.ReadCloser
+	cancel        context.CancelFunc
+	mode          TestMode
+	live          bool
+	reportingChan chan *StreamIntervalReport
+	reportingFile string
 }
 
 func (c *Client) LoadOptionsJSON(jsonStr string) (err error) {
-	return json.Unmarshal([]byte(jsonStr), c.options)
+	return json.Unmarshal([]byte(jsonStr), c.Options)
 }
 
 func (c *Client) LoadOptions(options *ClientOptions) {
-	c.options = options
+	c.Options = options
 }
 
 func (c *Client) commandString() (cmd string, err error) {
 	builder := strings.Builder{}
-	if c.options.Host == nil || *c.options.Host == "" {
+	if c.Options.Host == nil || *c.Options.Host == "" {
 		return "", errors.New("unable to execute client. The field 'host' is required")
 	}
 	fmt.Fprintf(&builder, "%s -c %s", binaryLocation, c.Host())
 
-	if c.options.Port != nil {
+	if c.Options.Port != nil {
 		fmt.Fprintf(&builder, " -p %d", c.Port())
 	}
 
-	if c.options.Format != nil && *c.options.Format != ' ' {
+	if c.Options.Format != nil && *c.Options.Format != ' ' {
 		fmt.Fprintf(&builder, " -f %c", c.Format())
 	}
 
-	if c.options.Interval != nil {
+	if c.Options.Interval != nil {
 		fmt.Fprintf(&builder, " -i %d", c.Interval())
 	}
 
-	if c.options.Proto != nil && *c.options.Proto == PROTO_UDP {
+	if c.Options.Proto != nil && *c.Options.Proto == PROTO_UDP {
 		fmt.Fprintf(&builder, " -u")
 	}
 
-	if c.options.Bandwidth != nil {
+	if c.Options.Bandwidth != nil {
 		fmt.Fprintf(&builder, " -b %s", c.Bandwidth())
 	}
 
-	if c.options.TimeSec != nil {
+	if c.Options.TimeSec != nil {
 		fmt.Fprintf(&builder, " -t %d", c.TimeSec())
 	}
 
-	if c.options.Bytes != nil {
+	if c.Options.Bytes != nil {
 		fmt.Fprintf(&builder, " -n %s", c.Bytes())
 	}
 
-	if c.options.BlockCount != nil {
+	if c.Options.BlockCount != nil {
 		fmt.Fprintf(&builder, " -k %s", c.BlockCount())
 	}
 
-	if c.options.Length != nil {
+	if c.Options.Length != nil {
 		fmt.Fprintf(&builder, " -l %s", c.Length())
 	}
 
-	if c.options.Streams != nil {
+	if c.Options.Streams != nil {
 		fmt.Fprintf(&builder, " -P %d", c.Streams())
 	}
 
-	if c.options.Reverse != nil && *c.options.Reverse {
+	if c.Options.Reverse != nil && *c.Options.Reverse {
 		builder.WriteString(" -R")
 	}
 
-	if c.options.Window != nil {
+	if c.Options.Window != nil {
 		fmt.Fprintf(&builder, " -w %s", c.Window())
 	}
 
-	if c.options.MSS != nil {
+	if c.Options.MSS != nil {
 		fmt.Fprintf(&builder, " -M %d", c.MSS())
 	}
 
-	if c.options.NoDelay != nil && *c.options.NoDelay {
+	if c.Options.NoDelay != nil && *c.Options.NoDelay {
 		builder.WriteString(" -N")
 	}
 
-	if c.options.Version6 != nil && *c.options.Version6 {
+	if c.Options.Version6 != nil && *c.Options.Version6 {
 		builder.WriteString(" -6")
 	}
 
-	if c.options.TOS != nil {
+	if c.Options.TOS != nil {
 		fmt.Fprintf(&builder, " -S %d", c.TOS())
 	}
 
-	if c.options.ZeroCopy != nil && *c.options.ZeroCopy {
+	if c.Options.ZeroCopy != nil && *c.Options.ZeroCopy {
 		builder.WriteString(" -Z")
 	}
 
-	if c.options.OmitSec != nil {
+	if c.Options.OmitSec != nil {
 		fmt.Fprintf(&builder, " -O %d", c.OmitSec())
 	}
 
-	if c.options.Prefix != nil {
+	if c.Options.Prefix != nil {
 		fmt.Fprintf(&builder, " -T %s", c.Prefix())
 	}
 
-	if c.options.LogFile != nil && *c.options.LogFile != "" {
+	if c.Options.LogFile != nil && *c.Options.LogFile != "" {
 		fmt.Fprintf(&builder, " --logfile %s", c.LogFile())
 	}
 
-	if c.options.JSON != nil && *c.options.JSON {
+	if c.Options.JSON != nil && *c.Options.JSON {
 		builder.WriteString(" -J")
 	}
 
-	if c.options.IncludeServer != nil && *c.options.IncludeServer {
+	if c.Options.IncludeServer != nil && *c.Options.IncludeServer {
 		builder.WriteString(" --get-server-output")
 	}
 
@@ -184,275 +184,275 @@ func (c *Client) commandString() (cmd string, err error) {
 }
 
 func (c *Client) Host() string {
-	if c.options.Host == nil {
+	if c.Options.Host == nil {
 		return ""
 	}
-	return *c.options.Host
+	return *c.Options.Host
 }
 
 func (c *Client) SetHost(host string) {
-	c.options.Host = &host
+	c.Options.Host = &host
 }
 
 func (c *Client) Port() int {
-	if c.options.Port == nil {
+	if c.Options.Port == nil {
 		return 5201
 	}
-	return *c.options.Port
+	return *c.Options.Port
 }
 
 func (c *Client) SetPort(port int) {
-	c.options.Port = &port
+	c.Options.Port = &port
 }
 
 func (c *Client) Format() rune {
-	if c.options.Format == nil {
+	if c.Options.Format == nil {
 		return ' '
 	}
-	return *c.options.Format
+	return *c.Options.Format
 }
 
 func (c *Client) SetFormat(format rune) {
-	c.options.Format = &format
+	c.Options.Format = &format
 }
 
 func (c *Client) Interval() int {
-	if c.options.Interval == nil {
+	if c.Options.Interval == nil {
 		return 1
 	}
-	return *c.options.Interval
+	return *c.Options.Interval
 }
 
 func (c *Client) SetInterval(interval int) {
-	c.options.Interval = &interval
+	c.Options.Interval = &interval
 }
 
 func (c *Client) Proto() Protocol {
-	if c.options.Proto == nil {
+	if c.Options.Proto == nil {
 		return PROTO_TCP
 	}
-	return *c.options.Proto
+	return *c.Options.Proto
 }
 
 func (c *Client) SetProto(proto Protocol) {
-	c.options.Proto = &proto
+	c.Options.Proto = &proto
 }
 
 func (c *Client) Bandwidth() string {
-	if c.options.Bandwidth == nil && c.Proto() == PROTO_TCP {
+	if c.Options.Bandwidth == nil && c.Proto() == PROTO_TCP {
 		return "0"
-	} else if c.options.Bandwidth == nil && c.Proto() == PROTO_UDP {
+	} else if c.Options.Bandwidth == nil && c.Proto() == PROTO_UDP {
 		return "1M"
 	}
-	return *c.options.Bandwidth
+	return *c.Options.Bandwidth
 }
 
 func (c *Client) SetBandwidth(bandwidth string) {
-	c.options.Bandwidth = &bandwidth
+	c.Options.Bandwidth = &bandwidth
 }
 
 func (c *Client) TimeSec() int {
-	if c.options.TimeSec == nil {
+	if c.Options.TimeSec == nil {
 		return 10
 	}
-	return *c.options.TimeSec
+	return *c.Options.TimeSec
 }
 
 func (c *Client) SetTimeSec(timeSec int) {
-	c.options.TimeSec = &timeSec
+	c.Options.TimeSec = &timeSec
 }
 
 func (c *Client) Bytes() string {
-	if c.options.Bytes == nil {
+	if c.Options.Bytes == nil {
 		return ""
 	}
-	return *c.options.Bytes
+	return *c.Options.Bytes
 }
 
 func (c *Client) SetBytes(bytes string) {
-	c.options.Bytes = &bytes
+	c.Options.Bytes = &bytes
 }
 
 func (c *Client) BlockCount() string {
-	if c.options.BlockCount == nil {
+	if c.Options.BlockCount == nil {
 		return ""
 	}
-	return *c.options.BlockCount
+	return *c.Options.BlockCount
 }
 
 func (c *Client) SetBlockCount(blockCount string) {
-	c.options.BlockCount = &blockCount
+	c.Options.BlockCount = &blockCount
 }
 
 func (c *Client) Length() string {
-	if c.options.Length == nil {
+	if c.Options.Length == nil {
 		if c.Proto() == PROTO_UDP {
 			return "1460"
 		} else {
 			return "128K"
 		}
 	}
-	return *c.options.Length
+	return *c.Options.Length
 }
 
 func (c *Client) SetLength(length string) {
-	c.options.Length = &length
+	c.Options.Length = &length
 }
 
 func (c *Client) Streams() int {
-	if c.options.Streams == nil {
+	if c.Options.Streams == nil {
 		return 1
 	}
-	return *c.options.Streams
+	return *c.Options.Streams
 }
 
 func (c *Client) SetStreams(streamCount int) {
-	c.options.Streams = &streamCount
+	c.Options.Streams = &streamCount
 }
 
 func (c *Client) Reverse() bool {
-	if c.options.Reverse == nil {
+	if c.Options.Reverse == nil {
 		return false
 	}
-	return *c.options.Reverse
+	return *c.Options.Reverse
 }
 
 func (c *Client) SetReverse(reverse bool) {
-	c.options.Reverse = &reverse
+	c.Options.Reverse = &reverse
 }
 
 func (c *Client) Window() string {
-	if c.options.Window == nil {
+	if c.Options.Window == nil {
 		return ""
 	}
-	return *c.options.Window
+	return *c.Options.Window
 }
 
 func (c *Client) SetWindow(window string) {
-	c.options.Window = &window
+	c.Options.Window = &window
 }
 
 func (c *Client) MSS() int {
-	if c.options.MSS == nil {
+	if c.Options.MSS == nil {
 		return 1460
 	}
-	return *c.options.MSS
+	return *c.Options.MSS
 }
 
 func (c *Client) SetMSS(mss int) {
-	c.options.MSS = &mss
+	c.Options.MSS = &mss
 }
 
 func (c *Client) NoDelay() bool {
-	if c.options.NoDelay == nil {
+	if c.Options.NoDelay == nil {
 		return false
 	}
-	return *c.options.NoDelay
+	return *c.Options.NoDelay
 }
 
 func (c *Client) SetNoDelay(noDelay bool) {
-	c.options.NoDelay = &noDelay
+	c.Options.NoDelay = &noDelay
 }
 
 func (c *Client) Version4() bool {
-	if c.options.Version6 == nil && c.options.Version4 == nil {
+	if c.Options.Version6 == nil && c.Options.Version4 == nil {
 		return true
-	} else if c.options.Version6 != nil && *c.options.Version6 == true {
+	} else if c.Options.Version6 != nil && *c.Options.Version6 == true {
 		return false
 	}
-	return *c.options.Version4
+	return *c.Options.Version4
 }
 
 func (c *Client) SetVersion4(set bool) {
-	c.options.Version4 = &set
+	c.Options.Version4 = &set
 }
 
 func (c *Client) Version6() bool {
-	if c.options.Version6 == nil {
+	if c.Options.Version6 == nil {
 		return false
 	}
-	return *c.options.Version6
+	return *c.Options.Version6
 }
 
 func (c *Client) SetVersion6(set bool) {
-	c.options.Version6 = &set
+	c.Options.Version6 = &set
 }
 
 func (c *Client) TOS() int {
-	if c.options.TOS == nil {
+	if c.Options.TOS == nil {
 		return 0
 	}
-	return *c.options.TOS
+	return *c.Options.TOS
 }
 
 func (c *Client) SetTOS(value int) {
-	c.options.TOS = &value
+	c.Options.TOS = &value
 }
 
 func (c *Client) ZeroCopy() bool {
-	if c.options.ZeroCopy == nil {
+	if c.Options.ZeroCopy == nil {
 		return false
 	}
-	return *c.options.ZeroCopy
+	return *c.Options.ZeroCopy
 }
 
 func (c *Client) SetZeroCopy(set bool) {
-	c.options.ZeroCopy = &set
+	c.Options.ZeroCopy = &set
 }
 
 func (c *Client) OmitSec() int {
-	if c.options.OmitSec == nil {
+	if c.Options.OmitSec == nil {
 		return 0
 	}
-	return *c.options.OmitSec
+	return *c.Options.OmitSec
 }
 
 func (c *Client) SetOmitSec(value int) {
-	c.options.OmitSec = &value
+	c.Options.OmitSec = &value
 }
 
 func (c *Client) Prefix() string {
-	if c.options.Prefix == nil {
+	if c.Options.Prefix == nil {
 		return ""
 	}
-	return *c.options.Prefix
+	return *c.Options.Prefix
 }
 
 func (c *Client) SetPrefix(prefix string) {
-	c.options.Prefix = &prefix
+	c.Options.Prefix = &prefix
 }
 
 func (c *Client) LogFile() string {
-	if c.options.LogFile == nil {
+	if c.Options.LogFile == nil {
 		return ""
 	}
-	return *c.options.LogFile
+	return *c.Options.LogFile
 }
 
 func (c *Client) SetLogFile(logfile string) {
-	c.options.LogFile = &logfile
+	c.Options.LogFile = &logfile
 }
 
 func (c *Client) JSON() bool {
-	if c.options.JSON == nil {
+	if c.Options.JSON == nil {
 		return false
 	}
-	return *c.options.JSON
+	return *c.Options.JSON
 }
 
 func (c *Client) SetJSON(set bool) {
-	c.options.JSON = &set
+	c.Options.JSON = &set
 }
 
 func (c *Client) IncludeServer() bool {
-	if c.options.IncludeServer == nil {
+	if c.Options.IncludeServer == nil {
 		return false
 	}
-	return *c.options.IncludeServer
+	return *c.Options.IncludeServer
 }
 
 func (c *Client) SetIncludeServer(set bool) {
-	c.options.IncludeServer = &set
+	c.Options.IncludeServer = &set
 }
 
 func (c *Client) ExitCode() *int {
@@ -487,7 +487,7 @@ func (c *Client) SetModeLive() <-chan *StreamIntervalReport {
 }
 
 func (c *Client) Start() (err error) {
-	//todo: Need to build the string based on the options above that are set
+	//todo: Need to build the string based on the Options above that are set
 	cmd, err := c.commandString()
 	if err != nil {
 		return err
