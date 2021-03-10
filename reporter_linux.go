@@ -57,6 +57,7 @@ func (r *Reporter) runLogProcessor() {
 	}
 	for line := range tailer.Lines {
 		// TODO: For now this only cares about individual streams it ignores the sum lines
+		fmt.Println(line.Text)
 		if len(line.Text) > 5 {
 			id := line.Text[1:4]
 			stream, err := strconv.Atoi(strings.TrimSpace(id))
@@ -64,7 +65,7 @@ func (r *Reporter) runLogProcessor() {
 				continue
 			}
 			fields := strings.Fields(line.Text[5:])
-			if len(fields) >= 6 {
+			if len(fields) >= 9 {
 				if fields[0] == "local" {
 					continue
 				}
@@ -85,7 +86,10 @@ func (r *Reporter) runLogProcessor() {
 				if err != nil {
 					log.Printf("failed to convert units: %s\n", err)
 				}
-				retrans := strconv.Atoi(fields[6])
+				retrans, err := strconv.Atoi(fields[6])
+				if err != nil {
+					log.Printf("failed to convert units: %s\n", err)
+				}
 				cwndStr := fmt.Sprintf("%s%s", fields[7], fields[8])
 				cwnd, err := conversions.StringBitRateToInt(cwndStr)
 				if err != nil {
@@ -104,7 +108,7 @@ func (r *Reporter) runLogProcessor() {
 					Bytes:         int(transferedBytes),
 					BitsPerSecond: float64(rate),
 					Retransmissions: retrans,
-					CongestionWindow: cwnd,
+					CongestionWindow: int(cwnd),
 					Omitted:       omitted,
 				}
 				r.ReportingChannel <- report
