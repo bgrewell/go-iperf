@@ -9,7 +9,14 @@ import (
 )
 
 func NewServer() *Server {
-	s := &Server{}
+	defaultPort := 5201
+	defaultInterval := 1
+	s := &Server{
+		SharedOptions: SharedOptions{
+			Port:     &defaultPort,
+			Interval: &defaultInterval,
+		},
+	}
 	s.Id = uuid.New().String()
 	return s
 }

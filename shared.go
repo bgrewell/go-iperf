@@ -17,6 +17,8 @@ type SharedOptions struct {
 	Port     *int
 	Format   *rune
 	Interval *int
+	JSON     *bool
+	LogFile  *string
 }
 
 type DebugScanner struct {

@@ -21,7 +21,9 @@ func NewClient(host string) *Client {
 	streams := 1
 	c := &Client{
 		options: &ClientOptions{
-			JSON:    &json,
+			SharedOptions: SharedOptions{
+				JSON: &json,
+			},
 			Proto:   &proto,
 			TimeSec: &time,
 			Length:  &length,
@@ -54,8 +56,6 @@ type ClientOptions struct {
 	ZeroCopy      *bool
 	OmitSec       *int
 	Prefix        *string
-	JSON          *bool
-	LogFile       *string
 	IncludeServer *bool
 }
 
@@ -85,6 +85,18 @@ func (c *Client) commandString() (cmd string, err error) {
 		return "", errors.New("unable to execute client. The field 'host' is required")
 	}
 	fmt.Fprintf(&builder, "%s -c %s", binaryLocation, c.Host())
+
+	if c.options.Port != nil {
+		fmt.Fprintf(&builder, " -p %d", c.Port())
+	}
+
+	if c.options.Format != nil || *c.options.Format != ' ' {
+		fmt.Fprintf(&builder, " -f %c", c.Format())
+	}
+
+	if c.options.Interval != nil {
+		fmt.Fprintf(&builder, " -i %d", c.Interval())
+	}
 
 	if c.options.Proto != nil && *c.options.Proto == PROTO_UDP {
 		fmt.Fprintf(&builder, " -u")
@@ -174,6 +186,39 @@ func (c *Client) Host() string {
 
 func (c *Client) SetHost(host string) {
 	c.options.Host = &host
+}
+
+func (c *Client) Port() int {
+	if c.options.Port == nil {
+		return 5201
+	}
+	return *c.options.Port
+}
+
+func (c *Client) SetPort(port int) {
+	c.options.Port = &port
+}
+
+func (c *Client) Format() rune {
+	if c.options.Format == nil {
+		return ' '
+	}
+	return *c.options.Format
+}
+
+func (c *Client) SetFormat(format rune) {
+	c.options.Format = &format
+}
+
+func (c *Client) Interval() int {
+	if c.options.Interval == nil {
+		return 1
+	}
+	return *c.options.Interval
+}
+
+func (c *Client) SetInterval(interval int) {
+	c.options.Interval = &interval
 }
 
 func (c *Client) Proto() Protocol {

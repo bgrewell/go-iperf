@@ -101,15 +101,15 @@ func (r *Reporter) runLogProcessor() {
 					omitted = true
 				}
 				report := &StreamIntervalReport{
-					Socket:        stream,
-					StartInterval: float32(start),
-					EndInterval:   float32(end),
-					Seconds:       float32(end - start),
-					Bytes:         int(transferedBytes),
-					BitsPerSecond: float64(rate),
-					Retransmissions: retrans,
+					Socket:           stream,
+					StartInterval:    float32(start),
+					EndInterval:      float32(end),
+					Seconds:          float32(end - start),
+					Bytes:            int(transferedBytes),
+					BitsPerSecond:    float64(rate),
+					Retransmissions:  retrans,
 					CongestionWindow: int(cwnd),
-					Omitted:       omitted,
+					Omitted:          omitted,
 				}
 				r.ReportingChannel <- report
 			}
