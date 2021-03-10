@@ -57,7 +57,6 @@ func (r *Reporter) runLogProcessor() {
 	}
 	for line := range tailer.Lines {
 		// TODO: For now this only cares about individual streams it ignores the sum lines
-		fmt.Println(line.Text)
 		if len(line.Text) > 5 {
 			id := line.Text[1:4]
 			stream, err := strconv.Atoi(strings.TrimSpace(id))
@@ -116,6 +115,8 @@ func (r *Reporter) runLogProcessor() {
 		}
 
 		if !r.running {
+			fmt.Println("reporter is finished. exiting")
+			close(r.ReportingChannel)
 			return
 		}
 	}
