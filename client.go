@@ -96,7 +96,7 @@ func (c *Client) commandString() (cmd string, err error) {
 		fmt.Fprintf(&builder, " -p %d", c.Port())
 	}
 
-	if c.options.Format != nil || *c.options.Format != ' ' {
+	if c.options.Format != nil && *c.options.Format != ' ' {
 		fmt.Fprintf(&builder, " -f %c", c.Format())
 	}
 
