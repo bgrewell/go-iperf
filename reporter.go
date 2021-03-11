@@ -2,6 +2,7 @@ package iperf
 
 import (
 	"github.com/BGrewell/tail"
+	"time"
 )
 
 type Reporter struct {
@@ -24,6 +25,7 @@ func (r *Reporter) Stop() {
 		if len(r.ReportingChannel) == 0 {
 			break
 		}
+		time.Sleep(1 * time.Millisecond)
 	}
 	close(r.ReportingChannel)
 }
