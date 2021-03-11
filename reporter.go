@@ -20,6 +20,11 @@ func (r *Reporter) Stop() {
 	r.running = false
 	r.tailer.Stop()
 	r.tailer.Cleanup()
+	for {
+		if len(r.ReportingChannel) == 0 {
+			break
+		}
+	}
 	close(r.ReportingChannel)
 }
 
