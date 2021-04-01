@@ -8,14 +8,14 @@ fi
 echo "[+] Building docker container"
 docker image build -t go-iperf-builder:1.0 .
 docker container run --detach --name builder go-iperf-builder:1.0
-docker cp grpc:/go/src/github.com/BGrewell/go-iperf/api/go/api.pb.go go/.
+docker cp builder:/go/src/github.com/BGrewell/go-iperf/api/go/github.com/BGrewell/go-iperf/api/control.pb.go go/.
 echo "[+] Updating of go library complete"
 
 echo "[+] Removing docker container"
 docker rm builder
 
 echo "[+] Adding new files to source control"
-git add go/api.pb.go
+git add go/control.pb.go
 git commit -m "regenerated grpc libraries"
 git push
 

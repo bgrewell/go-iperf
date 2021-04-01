@@ -2,6 +2,8 @@ syntax = "proto3";
 
 import "google/protobuf/empty.proto";
 
+option go_package = "github.com/BGrewell/go-iperf/api";
+
 // [START java_declaration]
 option java_multiple_files = true;
 option java_package = "com.bengrewell.go-iperf.control";
