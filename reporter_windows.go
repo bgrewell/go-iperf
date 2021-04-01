@@ -24,7 +24,7 @@ func (r *Reporter) runLogProcessor() {
 
 	for {
 		select {
-		case line := <- r.tailer.Lines:
+		case line := <-r.tailer.Lines:
 			if line == nil {
 				continue
 			}
@@ -72,7 +72,7 @@ func (r *Reporter) runLogProcessor() {
 					r.ReportingChannel <- report
 				}
 			}
-		case <- time.After(100 * time.Millisecond):
+		case <-time.After(100 * time.Millisecond):
 			if !r.running {
 				return
 			}

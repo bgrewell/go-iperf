@@ -9,7 +9,7 @@ type Reporter struct {
 	ReportingChannel chan *StreamIntervalReport
 	LogFile          string
 	running          bool
-	tailer *tail.Tail
+	tailer           *tail.Tail
 }
 
 func (r *Reporter) Start() {

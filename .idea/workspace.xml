@@ -2,7 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fc2840de-29dc-4fca-8e0e-a283562f60ca" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/api/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/build.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/proto/control.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/reporter.go" beforeDir="false" afterPath="$PROJECT_DIR$/reporter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reporter_linux.go" beforeDir="false" afterPath="$PROJECT_DIR$/reporter_linux.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reporter_windows.go" beforeDir="false" afterPath="$PROJECT_DIR$/reporter_windows.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared.go" beforeDir="false" afterPath="$PROJECT_DIR$/shared.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/tests/client/client.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +50,7 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ran_onf/onos-ric-master/cmd/apps/onos-ric-mlb/onos-ran-mlb.go" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>

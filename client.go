@@ -62,9 +62,9 @@ type ClientOptions struct {
 }
 
 type Client struct {
-	Id            string `json:"id" yaml:"id" xml:"id"`
-	Running       bool   `json:"running" yaml:"running" xml:"running"`
-	Done          chan bool `json:"-" yaml:"-" xml:"-"`
+	Id            string         `json:"id" yaml:"id" xml:"id"`
+	Running       bool           `json:"running" yaml:"running" xml:"running"`
+	Done          chan bool      `json:"-" yaml:"-" xml:"-"`
 	Options       *ClientOptions `json:"options" yaml:"options" xml:"options"`
 	exitCode      *int
 	report        *TestReport
@@ -487,7 +487,6 @@ func (c *Client) SetModeLive() <-chan *StreamIntervalReport {
 }
 
 func (c *Client) Start() (err error) {
-	//todo: Need to build the string based on the Options above that are set
 	cmd, err := c.commandString()
 	if err != nil {
 		return err

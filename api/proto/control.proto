@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+// [START java_declaration]
+option java_multiple_files = true;
+option java_package = "com.bengrewell.go-iperf.control";
+option java_outer_classname = "Control";
+// [END java_declaration]
+
+// [START csharp_declaration]
+option csharp_namespace = "BenGrewell.GoIperf.Control";
+// [END csharp_declaration]
+
+package api;
+
+service Command {
+  rpc StartServer(StartServerRequest) returns (StartServerResponse) {}
+}
+
+message StartServerRequest {
+}
+
+message StartServerResponse {
+  string id = 1;
+  int32 listen_port = 2;
+}
