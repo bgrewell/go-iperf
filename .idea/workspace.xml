@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fc2840de-29dc-4fca-8e0e-a283562f60ca" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/go-iperf.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/go-iperf.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/controller/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/api/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/api/build.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/proto/control.proto" beforeDir="false" afterPath="$PROJECT_DIR$/api/proto/control.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +17,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Go Application" />
         <option value="Go File" />
+        <option value="Go Application" />
       </list>
     </option>
   </component>
@@ -34,7 +35,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="DefaultGoTemplateProperty" value="Go Application" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -54,7 +55,7 @@
       <recent name="C:\Users\BGrewell\source\repos\go-iperf\tests\server" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.go build github.com/BGrewell/go-iperf/tests/client">
+  <component name="RunManager" selected="Go Build.go build github.com/BGrewell/go-iperf/tests/controller">
     <configuration name="go build github.com/BGrewell/go-iperf/cmd" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="go-iperf" />
       <working_directory value="$PROJECT_DIR$" />
@@ -73,6 +74,15 @@
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
+    <configuration name="go build github.com/BGrewell/go-iperf/tests/controller" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="go-iperf" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/tests/controller/main.go" />
+      <package value="github.com/BGrewell/go-iperf/tests/controller" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build github.com/BGrewell/go-iperf/tests/server" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="go-iperf" />
       <working_directory value="$PROJECT_DIR$" />
@@ -84,6 +94,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/controller" />
         <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/client" />
         <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/server" />
         <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/cmd" />

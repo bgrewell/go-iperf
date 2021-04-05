@@ -17,7 +17,7 @@ option csharp_namespace = "BenGrewell.GoIperf.Control";
 package api;
 
 service Command {
-  rpc StartServer(StartServerRequest) returns (StartServerResponse) {}
+  rpc GrpcRequestServer(StartServerRequest) returns (StartServerResponse) {}
 }
 
 message StartServerRequest {
