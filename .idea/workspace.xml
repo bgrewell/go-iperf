@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fc2840de-29dc-4fca-8e0e-a283562f60ca" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/tests/controller/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/extract/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/proto/control.proto" beforeDir="false" afterPath="$PROJECT_DIR$/api/proto/control.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bindata.go" beforeDir="false" afterPath="$PROJECT_DIR$/bindata.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iperf.go" beforeDir="false" afterPath="$PROJECT_DIR$/iperf.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,6 +83,15 @@
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
+    <configuration name="go build github.com/BGrewell/go-iperf/tests/extract" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="go-iperf" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/tests/extract/main.go" />
+      <package value="github.com/BGrewell/go-iperf/tests/extract" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build github.com/BGrewell/go-iperf/tests/server" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="go-iperf" />
       <working_directory value="$PROJECT_DIR$" />
@@ -95,6 +104,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/controller" />
+        <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/extract" />
         <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/client" />
         <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/server" />
         <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/cmd" />

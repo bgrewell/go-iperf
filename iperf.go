@@ -22,6 +22,11 @@ func init() {
 		if err != nil {
 			log.Fatalf("error initializing iperf: %v", err)
 		}
+	} else if runtime.GOOS == "darwin" {
+		err := extractMacEmbeddedBinaries()
+		if err != nil {
+			log.Fatalf("error initializing iperf: %v\n", err)
+		}
 	} else {
 		err := extractLinuxEmbeddedBinaries()
 		if err != nil {
@@ -32,6 +37,13 @@ func init() {
 
 func Cleanup() {
 	os.RemoveAll(binaryDir)
+}
+
+func ExtractBinaries() (err error) {
+	files := []string{"cygwin1.dll", "iperf3.exe", "iperf3", "iperf3.app"}
+	err = extractEmbeddedBinaries(files)
+	fmt.Printf("files extracted to %s\n", binaryDir)
+	return err
 }
 
 func extractWindowsEmbeddedBinaries() (err error) {
@@ -45,6 +57,13 @@ func extractLinuxEmbeddedBinaries() (err error) {
 	files := []string{"iperf3"}
 	err = extractEmbeddedBinaries(files)
 	binaryLocation = path.Join(binaryDir, "iperf3")
+	return err
+}
+
+func extractMacEmbeddedBinaries() (err error) {
+	files := []string{"iperf3.app"}
+	err = extractEmbeddedBinaries(files)
+	binaryLocation = path.Join(binaryDir, "iperf3.app")
 	return err
 }
 
