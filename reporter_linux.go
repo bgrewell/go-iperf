@@ -56,6 +56,9 @@ func (r *Reporter) runLogProcessor() {
 	if err != nil {
 		log.Fatalf("failed to tail log file: %v", err)
 	}
+	if DEBUG {
+		log.Printf("starting to watch log file: %s\n", r.LogFile)
+	}
 
 	for {
 		select {
