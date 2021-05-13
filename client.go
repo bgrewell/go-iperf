@@ -535,6 +535,5 @@ func (c *Client) Stop() {
 	if c.Running && c.cancel != nil {
 		c.cancel()
 		os.Remove(c.reportingFile)
-		c.Done <- true
 	}
 }
