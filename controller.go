@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"sync"
 	"time"
 
 	api "github.com/BGrewell/go-iperf/api/go"
@@ -16,6 +17,8 @@ func NewController(port int) (controller *Controller, err error) {
 		Port:    port,
 		clients: make(map[string]*Client),
 		servers: make(map[string]*Server),
+		clientLock: sync.Mutex{},
+		serverLock: sync.Mutex{},
 	}
 	err = c.startListener()
 
@@ -36,6 +39,8 @@ type Controller struct {
 	api.UnimplementedCommandServer
 	Port int
 	cmdClient api.CommandClient
+	clientLock sync.Mutex
+	serverLock sync.Mutex
 	clients map[string]*Client
 	servers map[string]*Server
 }
@@ -52,7 +57,9 @@ func (c *Controller) GrpcRequestServer(context.Context, *api.StartServerRequest)
 		return nil, err
 	}
 
+	c.serverLock.Lock()
 	c.servers[srv.Id] = srv
+	c.serverLock.Unlock()
 	
 	reply := &api.StartServerResponse{
 		Id:         srv.Id,
@@ -88,13 +95,17 @@ func (c *Controller) NewServer() (server *Server, err error) {
 	freePort, err := GetUnusedTcpPort()
 	s := NewServer()
 	s.SetPort(freePort)
+	c.serverLock.Lock()
 	c.servers[s.Id] = s
+	c.serverLock.Unlock()
 	return s, nil
 }
 
 // StopServer shuts down an iperf server and frees any actively used resources
 func (c *Controller) StopServer(id string) (err error) {
+	c.serverLock.Lock()
 	delete(c.servers, id)
+	c.serverLock.Unlock()
 	return nil
 }
 
@@ -114,14 +125,18 @@ func (c *Controller) NewClient(serverAddr string) (client *Client, err error) {
 	
 	cli := NewClient(serverAddr)
 	cli.SetPort(srvPort)
+	c.clientLock.Lock()
 	c.clients[cli.Id] = cli
+	c.clientLock.Unlock()
 
 	return cli, nil
 }
 
 // StopClient will clean up the server side connection and shut down any actively used resources
 func (c *Controller) StopClient(id string) (err error) {
+	c.clientLock.Lock()
 	delete(c.clients, id)
+	c.clientLock.Unlock()
 	return nil
 }
 
