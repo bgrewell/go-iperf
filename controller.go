@@ -117,7 +117,7 @@ func (c *Controller) NewClient(serverAddr string) (client *Client, err error) {
 		return nil, err
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 2 * time.Second)
 	defer cancel()
 	reply, err := grpc.GrpcRequestServer(ctx, &api.StartServerRequest{})
 	srvPort := int(reply.ListenPort)
