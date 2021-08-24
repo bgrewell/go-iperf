@@ -87,6 +87,7 @@ func (c *Controller) startListener() (err error) {
 		}
 	}()
 
+	time.Sleep(250 * time.Millisecond)
 	return nil
 }
 
