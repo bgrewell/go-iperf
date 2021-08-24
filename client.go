@@ -499,14 +499,14 @@ func (c *Client) Start() (err error) {
 	}
 	c.Running = true
 	if c.Debug {
-		go func() {
-			ds := DebugScanner{Silent: false}
-			ds.Scan(c.outputStream)
-		}()
-		go func() {
-			ds := DebugScanner{Silent: false}
-			ds.Scan(c.errorStream)
-		}()
+		//go func() {
+		//	ds := DebugScanner{Silent: false}
+		//	ds.Scan(c.outputStream)
+		//}()
+		//go func() {
+		//	ds := DebugScanner{Silent: false}
+		//	ds.Scan(c.errorStream)
+		//}()
 	}
 	go func() {
 		var reporter *Reporter
