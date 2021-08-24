@@ -66,6 +66,7 @@ type Client struct {
 	Running       bool           `json:"running" yaml:"running" xml:"running"`
 	Done          chan bool      `json:"-" yaml:"-" xml:"-"`
 	Options       *ClientOptions `json:"options" yaml:"options" xml:"options"`
+	Debug bool `json:"-" yaml:"-" xml:"-"`
 	exitCode      *int
 	report        *TestReport
 	outputStream  io.ReadCloser
@@ -497,14 +498,16 @@ func (c *Client) Start() (err error) {
 		return err
 	}
 	c.Running = true
-	//go func() {
-	//	ds := DebugScanner{Silent: false}
-	//	ds.Scan(c.outputStream)
-	//}()
-	//go func() {
-	//	ds := DebugScanner{Silent: false}
-	//	ds.Scan(c.errorStream)
-	//}()
+	if c.Debug {
+		go func() {
+			ds := DebugScanner{Silent: false}
+			ds.Scan(c.outputStream)
+		}()
+		go func() {
+			ds := DebugScanner{Silent: false}
+			ds.Scan(c.errorStream)
+		}()
+	}
 	go func() {
 		var reporter *Reporter
 		if c.live {
