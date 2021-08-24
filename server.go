@@ -42,6 +42,7 @@ type Server struct {
 	Running      bool               `json:"running" yaml:"running" xml:"running"`
 	Options      *ServerOptions     `json:"-" yaml:"-" xml:"-"`
 	ExitCode     *int               `json:"exit_code" yaml:"exit_code" xml:"exit_code"`
+	Debug bool `json:"-" yaml:"-" xml:"-"`
 	outputStream io.ReadCloser      `json:"output_stream" yaml:"output_stream" xml:"output_stream"`
 	errorStream  io.ReadCloser      `json:"error_stream" yaml:"error_stream" xml:"error_stream"`
 	cancel       context.CancelFunc `json:"cancel" yaml:"cancel" xml:"cancel"`
@@ -160,11 +161,11 @@ func (s *Server) Start() (err error) {
 	}
 	s.Running = true
 	go func() {
-		ds := DebugScanner{Silent: true}
+		ds := DebugScanner{Silent: s.Debug}
 		ds.Scan(s.outputStream)
 	}()
 	go func() {
-		ds := DebugScanner{Silent: true}
+		ds := DebugScanner{Silent: s.Debug}
 		ds.Scan(s.errorStream)
 	}()
 	go func() {
