@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	Debug          = true
+	Debug          = false
 	binaryDir      = ""
 	binaryLocation = ""
 )
