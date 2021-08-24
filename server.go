@@ -161,11 +161,11 @@ func (s *Server) Start() (err error) {
 	}
 	s.Running = true
 	go func() {
-		ds := DebugScanner{Silent: s.Debug}
+		ds := DebugScanner{Silent: !s.Debug}
 		ds.Scan(s.outputStream)
 	}()
 	go func() {
-		ds := DebugScanner{Silent: s.Debug}
+		ds := DebugScanner{Silent: !s.Debug}
 		ds.Scan(s.errorStream)
 	}()
 	go func() {
