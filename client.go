@@ -518,17 +518,25 @@ func (c *Client) Start() (err error) {
 			}
 			reporter.Start()
 		} else {
+			if c.Debug {
+				fmt.Println("reading output")
+			}
 			testOutput, err := ioutil.ReadAll(c.outputStream)
 			if err != nil {
 				if c.Debug {
 					fmt.Println(err.Error())
 				}
-				return
+			}
+			if c.Debug {
+				fmt.Println("parsing output")
 			}
 			c.report, err = Loads(string(testOutput))
 			if err != nil && c.Debug {
 				fmt.Println(err.Error())
 			}
+		}
+		if c.Debug {
+			fmt.Println("complete")
 		}
 		exitCode := <-exit
 		c.exitCode = &exitCode
