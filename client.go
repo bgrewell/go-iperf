@@ -520,9 +520,15 @@ func (c *Client) Start() (err error) {
 		} else {
 			testOutput, err := ioutil.ReadAll(c.outputStream)
 			if err != nil {
+				if c.Debug {
+					fmt.Println(err.Error())
+				}
 				return
 			}
 			c.report, err = Loads(string(testOutput))
+			if err != nil && c.Debug {
+				fmt.Println(err.Error())
+			}
 		}
 		exitCode := <-exit
 		c.exitCode = &exitCode
