@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"strings"
 	"syscall"
+	"time"
 )
 
 func ExecuteAsync(cmd string) (outPipe io.ReadCloser, errPipe io.ReadCloser, exitCode chan int, err error) {
@@ -68,6 +69,7 @@ func ExecuteAsyncWithCancel(cmd string) (stdOut io.ReadCloser, stdErr io.ReadClo
 		return nil, nil, nil, nil, err
 	}
 	go func() {
+		time.Sleep(30 * time.Second)
 		if err := exe.Wait(); err != nil {
 			if exiterr, ok := err.(*exec.ExitError); ok {
 				if status, ok := exiterr.Sys().(syscall.WaitStatus); ok {
