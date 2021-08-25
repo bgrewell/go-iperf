@@ -500,10 +500,10 @@ func (c *Client) Start() (err error) {
 	}
 	c.Running = true
 
-	go func() {
-		ds := DebugScanner{Silent: !c.StdOut}
-		ds.Scan(c.outputStream)
-	}()
+	//go func() {
+	//	ds := DebugScanner{Silent: !c.StdOut}
+	//	ds.Scan(c.outputStream)
+	//}()
 	go func() {
 		ds := DebugScanner{Silent: !c.Debug}
 		ds.Scan(c.errorStream)
