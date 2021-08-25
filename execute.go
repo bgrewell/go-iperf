@@ -6,7 +6,6 @@ import (
 	"os/exec"
 	"strings"
 	"syscall"
-	"time"
 )
 
 func ExecuteAsync(cmd string) (outPipe io.ReadCloser, errPipe io.ReadCloser, exitCode chan int, err error) {
@@ -44,6 +43,10 @@ func ExecuteAsync(cmd string) (outPipe io.ReadCloser, errPipe io.ReadCloser, exi
 }
 
 func ExecuteAsyncWithCancel(cmd string) (stdOut io.ReadCloser, stdErr io.ReadCloser, exitCode chan int, cancelToken context.CancelFunc, err error) {
+	return ExecuteAsyncWithCancelReadIndicator(cmd, nil)
+}
+
+func ExecuteAsyncWithCancelReadIndicator(cmd string, readIndicator chan interface{}) (stdOut io.ReadCloser, stdErr io.ReadCloser, exitCode chan int, cancelToken context.CancelFunc, err error) {
 	exitCode = make(chan int)
 	ctx, cancel := context.WithCancel(context.Background())
 	cmdParts := strings.Fields(cmd)
@@ -69,7 +72,11 @@ func ExecuteAsyncWithCancel(cmd string) (stdOut io.ReadCloser, stdErr io.ReadClo
 		return nil, nil, nil, nil, err
 	}
 	go func() {
-		time.Sleep(30 * time.Second)
+		// Note: Wait() will close the Stdout/Stderr and in some cases can do it before we read. In order to prevent
+		// this we need to actually wait until the caller has finished reading.
+		if readIndicator != nil {
+			<- readIndicator
+		}
 		if err := exe.Wait(); err != nil {
 			if exiterr, ok := err.(*exec.ExitError); ok {
 				if status, ok := exiterr.Sys().(syscall.WaitStatus); ok {

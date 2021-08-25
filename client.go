@@ -489,12 +489,13 @@ func (c *Client) SetModeLive() <-chan *StreamIntervalReport {
 }
 
 func (c *Client) Start() (err error) {
+	read := make(chan interface{})
 	cmd, err := c.commandString()
 	if err != nil {
 		return err
 	}
 	var exit chan int
-	c.outputStream, c.errorStream, exit, c.cancel, err = ExecuteAsyncWithCancel(cmd)
+	c.outputStream, c.errorStream, exit, c.cancel, err = ExecuteAsyncWithCancelReadIndicator(cmd, read)
 	if err != nil {
 		return err
 	}
@@ -522,6 +523,7 @@ func (c *Client) Start() (err error) {
 				fmt.Println("reading output")
 			}
 			testOutput, err := ioutil.ReadAll(c.outputStream)
+			read <- true
 			if err != nil {
 				if c.Debug {
 					fmt.Println(err.Error())
