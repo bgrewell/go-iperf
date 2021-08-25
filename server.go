@@ -42,7 +42,8 @@ type Server struct {
 	Running      bool               `json:"running" yaml:"running" xml:"running"`
 	Options      *ServerOptions     `json:"-" yaml:"-" xml:"-"`
 	ExitCode     *int               `json:"exit_code" yaml:"exit_code" xml:"exit_code"`
-	Debug bool `json:"-" yaml:"-" xml:"-"`
+	Debug        bool               `json:"-" yaml:"-" xml:"-"`
+	StdOut       bool               `json:"-" yaml:"-" xml:"-"`
 	outputStream io.ReadCloser      `json:"output_stream" yaml:"output_stream" xml:"output_stream"`
 	errorStream  io.ReadCloser      `json:"error_stream" yaml:"error_stream" xml:"error_stream"`
 	cancel       context.CancelFunc `json:"cancel" yaml:"cancel" xml:"cancel"`
@@ -80,7 +81,7 @@ func (s *Server) commandString() (cmd string, err error) {
 		builder.WriteString(" --json")
 	}
 
-	if s.Options.LogFile != nil  && s.LogFile() != "" {
+	if s.Options.LogFile != nil && s.LogFile() != "" {
 		fmt.Fprintf(&builder, " --logfile %s --forceflush", s.LogFile())
 	}
 
@@ -160,14 +161,16 @@ func (s *Server) Start() (err error) {
 		return err
 	}
 	s.Running = true
+
 	go func() {
-		ds := DebugScanner{Silent: !s.Debug}
+		ds := DebugScanner{Silent: !s.StdOut}
 		ds.Scan(s.outputStream)
 	}()
 	go func() {
 		ds := DebugScanner{Silent: !s.Debug}
 		ds.Scan(s.errorStream)
 	}()
+
 	go func() {
 		exitCode := <-exit
 		s.ExitCode = &exitCode
