@@ -151,14 +151,23 @@ func (s *Server) SetLogFile(filename string) {
 }
 
 func (s *Server) Start() (err error) {
+	_, err = s.start()
+	return err
+}
+
+func (s *Server) StartEx() (pid int, err error) {
+	return s.start()
+}
+
+func (s *Server) start() (pid int, err error) {
 	cmd, err := s.commandString()
 	if err != nil {
-		return err
+		return -1, err
 	}
 	var exit chan int
-	s.outputStream, s.errorStream, exit, s.cancel, err = ExecuteAsyncWithCancel(cmd)
+	s.outputStream, s.errorStream, exit, s.cancel, pid, err = ExecuteAsyncWithCancel(cmd)
 	if err != nil {
-		return err
+		return -1, err
 	}
 	s.Running = true
 
@@ -176,7 +185,7 @@ func (s *Server) Start() (err error) {
 		s.ExitCode = &exitCode
 		s.Running = false
 	}()
-	return nil
+	return pid,nil
 }
 
 func (s *Server) Stop() {

@@ -489,15 +489,24 @@ func (c *Client) SetModeLive() <-chan *StreamIntervalReport {
 }
 
 func (c *Client) Start() (err error) {
+	_, err = c.start()
+	return err
+}
+
+func (c *Client) StartEx() (pid int, err error) {
+	return c.start()
+}
+
+func (c *Client) start() (pid int, err error) {
 	read := make(chan interface{})
 	cmd, err := c.commandString()
 	if err != nil {
-		return err
+		return -1, err
 	}
 	var exit chan int
-	c.outputStream, c.errorStream, exit, c.cancel, err = ExecuteAsyncWithCancelReadIndicator(cmd, read)
+	c.outputStream, c.errorStream, exit, c.cancel, pid, err = ExecuteAsyncWithCancelReadIndicator(cmd, read)
 	if err != nil {
-		return err
+		return -1, err
 	}
 	c.Running = true
 
@@ -548,7 +557,7 @@ func (c *Client) Start() (err error) {
 			reporter.Stop()
 		}
 	}()
-	return nil
+	return pid, nil
 }
 
 func (c *Client) Stop() {
