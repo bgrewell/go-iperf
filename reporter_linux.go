@@ -56,6 +56,9 @@ func (r *Reporter) runLogProcessor() {
 	if err != nil {
 		log.Fatalf("failed to tail log file: %v", err)
 	}
+	if DEBUG {
+		log.Printf("starting to watch log file: %s\n", r.LogFile)
+	}
 
 	for {
 		select {
@@ -63,10 +66,16 @@ func (r *Reporter) runLogProcessor() {
 			if line == nil {
 				continue
 			}
+			if DEBUG {
+				log.Printf("new line: %s\n", line)
+			}
 			if len(line.Text) > 5 {
 				id := line.Text[1:4]
 				stream, err := strconv.Atoi(strings.TrimSpace(id))
 				if err != nil {
+					if DEBUG {
+						log.Printf("error converting stream id to int: %v\n", err)
+					}
 					continue
 				}
 				fields := strings.Fields(line.Text[5:])
@@ -117,6 +126,9 @@ func (r *Reporter) runLogProcessor() {
 						Omitted:          omitted,
 					}
 					r.ReportingChannel <- report
+					if DEBUG {
+						log.Println("added report to reporting channel")
+					}
 				}
 			}
 		case <-time.After(100 * time.Millisecond):

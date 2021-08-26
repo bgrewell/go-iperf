@@ -66,6 +66,8 @@ type Client struct {
 	Running       bool           `json:"running" yaml:"running" xml:"running"`
 	Done          chan bool      `json:"-" yaml:"-" xml:"-"`
 	Options       *ClientOptions `json:"options" yaml:"options" xml:"options"`
+	Debug         bool           `json:"-" yaml:"-" xml:"-"`
+	StdOut        bool           `json:"-" yaml:"-" xml:"-"`
 	exitCode      *int
 	report        *TestReport
 	outputStream  io.ReadCloser
@@ -487,24 +489,27 @@ func (c *Client) SetModeLive() <-chan *StreamIntervalReport {
 }
 
 func (c *Client) Start() (err error) {
+	read := make(chan interface{})
 	cmd, err := c.commandString()
 	if err != nil {
 		return err
 	}
 	var exit chan int
-	c.outputStream, c.errorStream, exit, c.cancel, err = ExecuteAsyncWithCancel(cmd)
+	c.outputStream, c.errorStream, exit, c.cancel, err = ExecuteAsyncWithCancelReadIndicator(cmd, read)
 	if err != nil {
 		return err
 	}
 	c.Running = true
+
 	//go func() {
-	//	ds := DebugScanner{Silent: false}
+	//	ds := DebugScanner{Silent: !c.StdOut}
 	//	ds.Scan(c.outputStream)
 	//}()
-	//go func() {
-	//	ds := DebugScanner{Silent: false}
-	//	ds.Scan(c.errorStream)
-	//}()
+	go func() {
+		ds := DebugScanner{Silent: !c.Debug}
+		ds.Scan(c.errorStream)
+	}()
+
 	go func() {
 		var reporter *Reporter
 		if c.live {
@@ -514,11 +519,26 @@ func (c *Client) Start() (err error) {
 			}
 			reporter.Start()
 		} else {
+			if c.Debug {
+				fmt.Println("reading output")
+			}
 			testOutput, err := ioutil.ReadAll(c.outputStream)
+			read <- true
 			if err != nil {
-				return
+				if c.Debug {
+					fmt.Println(err.Error())
+				}
+			}
+			if c.Debug {
+				fmt.Println("parsing output")
 			}
 			c.report, err = Loads(string(testOutput))
+			if err != nil && c.Debug {
+				fmt.Println(err.Error())
+			}
+		}
+		if c.Debug {
+			fmt.Println("complete")
 		}
 		exitCode := <-exit
 		c.exitCode = &exitCode
@@ -535,6 +555,5 @@ func (c *Client) Stop() {
 	if c.Running && c.cancel != nil {
 		c.cancel()
 		os.Remove(c.reportingFile)
-		c.Done <- true
 	}
 }
