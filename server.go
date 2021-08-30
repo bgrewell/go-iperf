@@ -165,14 +165,12 @@ func (s *Server) start() (pid int, err error) {
 		return -1, err
 	}
 	var exit chan int
-<<<<<<< HEAD
+
 	if s.Debug {
 		fmt.Printf("executing command: %s\n", cmd)
 	}
-	s.outputStream, s.errorStream, exit, s.cancel, err = ExecuteAsyncWithCancel(cmd)
-=======
 	s.outputStream, s.errorStream, exit, s.cancel, pid, err = ExecuteAsyncWithCancel(cmd)
->>>>>>> 328913249f87399ed1ce133fec58df85a24aa9b0
+
 	if err != nil {
 		return -1, err
 	}

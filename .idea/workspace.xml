@@ -8,7 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/client.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/execute.go" beforeDir="false" afterPath="$PROJECT_DIR$/execute.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/server.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -63,45 +62,45 @@
       <module name="go-iperf" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$/cmd/main.go" />
       <package value="github.com/BGrewell/go-iperf/cmd" />
       <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/cmd/main.go" />
       <method v="2" />
     </configuration>
     <configuration name="go build github.com/BGrewell/go-iperf/tests/client" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="go-iperf" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$/tests/client/client.go" />
       <package value="github.com/BGrewell/go-iperf/tests/client" />
       <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/tests/client/client.go" />
       <method v="2" />
     </configuration>
     <configuration name="go build github.com/BGrewell/go-iperf/tests/controller" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="go-iperf" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$/tests/controller/main.go" />
       <package value="github.com/BGrewell/go-iperf/tests/controller" />
       <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/tests/controller/main.go" />
       <method v="2" />
     </configuration>
     <configuration name="go build github.com/BGrewell/go-iperf/tests/extract" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="go-iperf" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$/tests/extract/main.go" />
       <package value="github.com/BGrewell/go-iperf/tests/extract" />
       <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/tests/extract/main.go" />
       <method v="2" />
     </configuration>
     <configuration name="go build github.com/BGrewell/go-iperf/tests/server" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="go-iperf" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$/tests/server/server.go" />
       <package value="github.com/BGrewell/go-iperf/tests/server" />
       <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/tests/server/server.go" />
       <method v="2" />
     </configuration>
     <recent_temporary>

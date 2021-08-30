@@ -504,14 +504,12 @@ func (c *Client) start() (pid int, err error) {
 		return -1, err
 	}
 	var exit chan int
-<<<<<<< HEAD
+
 	if c.Debug {
 		fmt.Printf("executing command: %s\n", cmd)
 	}
-	c.outputStream, c.errorStream, exit, c.cancel, err = ExecuteAsyncWithCancelReadIndicator(cmd, read)
-=======
 	c.outputStream, c.errorStream, exit, c.cancel, pid, err = ExecuteAsyncWithCancelReadIndicator(cmd, read)
->>>>>>> 328913249f87399ed1ce133fec58df85a24aa9b0
+
 	if err != nil {
 		return -1, err
 	}

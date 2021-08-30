@@ -6,10 +6,6 @@ import (
 //"github.com/BGrewell/go-iperf"
 //"time"
 	"fmt"
-<<<<<<< HEAD
-	"github.com/BGrewell/go-conversions"
-=======
->>>>>>> 328913249f87399ed1ce133fec58df85a24aa9b0
 	"github.com/BGrewell/go-iperf"
 	"time"
 )
