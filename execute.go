@@ -42,34 +42,38 @@ func ExecuteAsync(cmd string) (outPipe io.ReadCloser, errPipe io.ReadCloser, exi
 	return outPipe, errPipe, exitCode, nil
 }
 
-func ExecuteAsyncWithCancel(cmd string) (stdOut io.ReadCloser, stdErr io.ReadCloser, exitCode chan int, cancelToken context.CancelFunc, err error) {
+func ExecuteAsyncWithCancel(cmd string) (stdOut io.ReadCloser, stdErr io.ReadCloser, exitCode chan int, cancelToken context.CancelFunc, pid int, err error) {
 	return ExecuteAsyncWithCancelReadIndicator(cmd, nil)
 }
 
-func ExecuteAsyncWithCancelReadIndicator(cmd string, readIndicator chan interface{}) (stdOut io.ReadCloser, stdErr io.ReadCloser, exitCode chan int, cancelToken context.CancelFunc, err error) {
+func ExecuteAsyncWithCancelReadIndicator(cmd string, readIndicator chan interface{}) (stdOut io.ReadCloser, stdErr io.ReadCloser, exitCode chan int, cancelToken context.CancelFunc, pid int, err error) {
+	return executeAsyncWithCancel(cmd, readIndicator)
+}
+
+func executeAsyncWithCancel(cmd string, readIndicator chan interface{}) (stdOut io.ReadCloser, stdErr io.ReadCloser, exitCode chan int, cancelToken context.CancelFunc, pid int, err error) {
 	exitCode = make(chan int)
 	ctx, cancel := context.WithCancel(context.Background())
 	cmdParts := strings.Fields(cmd)
 	binary, err := exec.LookPath(cmdParts[0])
 	if err != nil {
 		defer cancel()
-		return nil, nil, nil, nil, err
+		return nil, nil, nil, nil, -1, err
 	}
 	exe := exec.CommandContext(ctx, binary, cmdParts[1:]...)
 	stdOut, err = exe.StdoutPipe()
 	if err != nil {
 		defer cancel()
-		return nil, nil, nil, nil, err
+		return nil, nil, nil, nil, -1, err
 	}
 	stdErr, err = exe.StderrPipe()
 	if err != nil {
 		defer cancel()
-		return nil, nil, nil, nil, err
+		return nil, nil, nil, nil, -1, err
 	}
 	err = exe.Start()
 	if err != nil {
 		defer cancel()
-		return nil, nil, nil, nil, err
+		return nil, nil, nil, nil, -1, err
 	}
 	go func() {
 		// Note: Wait() will close the Stdout/Stderr and in some cases can do it before we read. In order to prevent
@@ -87,5 +91,5 @@ func ExecuteAsyncWithCancelReadIndicator(cmd string, readIndicator chan interfac
 			exitCode <- 0
 		}
 	}()
-	return stdOut, stdErr, exitCode, cancel, nil
+	return stdOut, stdErr, exitCode, cancel, exe.Process.Pid, nil
 }

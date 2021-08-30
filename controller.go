@@ -29,12 +29,6 @@ func NewController(port int) (controller *Controller, err error) {
 // server side it listens for new gRPC connections, when a connection is made by a client the client can tell it to
 // start a new iperf server instance. It will start a instance on an unused port and return the port number to the
 // client. This allows the entire iperf setup and session to be performed from the client side.
-//
-// CLIENT							SERVER
-// connect to grpc --->				accept grpc connection
-// call StartServer() --->			find unused port
-//									start iperf server on port
-// get server port info        <--- return port information to client
 type Controller struct {
 	api.UnimplementedCommandServer
 	Port int
