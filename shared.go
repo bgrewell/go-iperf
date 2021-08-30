@@ -6,10 +6,6 @@ import (
 	"io"
 )
 
-var (
-	DEBUG = false
-)
-
 type TestMode string
 
 const (

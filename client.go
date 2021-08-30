@@ -495,6 +495,9 @@ func (c *Client) Start() (err error) {
 		return err
 	}
 	var exit chan int
+	if c.Debug {
+		fmt.Printf("executing command: %s\n", cmd)
+	}
 	c.outputStream, c.errorStream, exit, c.cancel, err = ExecuteAsyncWithCancelReadIndicator(cmd, read)
 	if err != nil {
 		return err
