@@ -532,6 +532,7 @@ func (c *Client) start() (pid int, err error) {
 				LogFile:          c.reportingFile,
 			}
 			reporter.Start()
+			read <- true // signal we are reading data
 		} else {
 			if c.Debug {
 				fmt.Println("reading output")
@@ -557,10 +558,12 @@ func (c *Client) start() (pid int, err error) {
 		exitCode := <-exit
 		c.exitCode = &exitCode
 		c.Running = false
-		c.Done <- true
+
 		if reporter != nil {
 			reporter.Stop()
 		}
+
+		c.Done <- true
 	}()
 	return pid, nil
 }

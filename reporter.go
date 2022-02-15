@@ -18,16 +18,21 @@ func (r *Reporter) Start() {
 }
 
 func (r *Reporter) Stop() {
+
 	r.running = false
 	r.tailer.Stop()
 	r.tailer.Cleanup()
+
 	for {
 		if len(r.ReportingChannel) == 0 {
 			break
 		}
 		time.Sleep(1 * time.Millisecond)
 	}
-	close(r.ReportingChannel)
+	if r.ReportingChannel != nil {
+		time.Sleep(500 * time.Millisecond)
+		close(r.ReportingChannel)
+	}
 }
 
 // runLogProcessor is OS specific because of differences in iperf on Windows and Linux

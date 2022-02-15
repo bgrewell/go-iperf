@@ -79,13 +79,17 @@ func executeAsyncWithCancel(cmd string, readIndicator chan interface{}) (stdOut 
 		// Note: Wait() will close the Stdout/Stderr and in some cases can do it before we read. In order to prevent
 		// this we need to actually wait until the caller has finished reading.
 		if readIndicator != nil {
-			<- readIndicator
+			<-readIndicator
 		}
 		if err := exe.Wait(); err != nil {
 			if exiterr, ok := err.(*exec.ExitError); ok {
 				if status, ok := exiterr.Sys().(syscall.WaitStatus); ok {
 					exitCode <- status.ExitStatus()
+				} else {
+					exitCode <- -2
 				}
+			} else {
+				exitCode <- -1
 			}
 		} else {
 			exitCode <- 0

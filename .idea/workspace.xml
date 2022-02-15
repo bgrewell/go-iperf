@@ -5,11 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fc2840de-29dc-4fca-8e0e-a283562f60ca" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bindata.go" beforeDir="false" afterPath="$PROJECT_DIR$/bindata.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iperf.go" beforeDir="false" afterPath="$PROJECT_DIR$/iperf.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/tests/client/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/execute.go" beforeDir="false" afterPath="$PROJECT_DIR$/execute.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reporter.go" beforeDir="false" afterPath="$PROJECT_DIR$/reporter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/examples/client/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/controller/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/examples/controller/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/extract/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/examples/extract/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/server/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/examples/server/server.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +75,7 @@
       <recent name="C:\Users\BGrewell\source\repos\go-iperf\tests\server" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.go build github.com/BGrewell/go-iperf/cmd">
+  <component name="RunManager" selected="Go Build.go build github.com/BGrewell/go-iperf/examples/client">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="go-iperf" />
       <working_directory value="$PROJECT_DIR$" />
@@ -89,11 +94,11 @@
       <filePath value="$PROJECT_DIR$/cmd/main.go" />
       <method v="2" />
     </configuration>
-    <configuration name="go build github.com/BGrewell/go-iperf/tests/client" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="go build github.com/BGrewell/go-iperf/examples/client" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="go-iperf" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="github.com/BGrewell/go-iperf/tests/client" />
+      <package value="github.com/BGrewell/go-iperf/examples/client" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$/tests/client/client.go" />
       <method v="2" />
@@ -135,12 +140,19 @@
       <framework value="gotest" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/cmd" />
+      <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/examples/client" />
+      <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/controller" />
+      <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/extract" />
+      <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/server" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/examples/client" />
         <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/cmd" />
         <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/controller" />
         <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/extract" />
-        <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/client" />
         <item itemvalue="Go Build.go build github.com/BGrewell/go-iperf/tests/server" />
       </list>
     </recent_temporary>
