@@ -14,7 +14,7 @@ func main() {
 	omitSec := 0
 	length := "65500"
 
-	c := iperf.NewClient("10.254.100.100")
+	c := iperf.NewClient("127.0.0.1")
 	c.SetIncludeServer(includeServer)
 	c.SetTimeSec(runTime)
 	c.SetOmitSec(omitSec)

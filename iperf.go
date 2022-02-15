@@ -40,14 +40,14 @@ func Cleanup() {
 }
 
 func ExtractBinaries() (err error) {
-	files := []string{"cygwin1.dll", "iperf3.exe", "iperf3", "iperf3.app"}
+	files := []string{"cygwin1.dll", "cygcrypto-1.1.dll", "cygz.dll", "iperf3.exe", "iperf3", "iperf3.app"}
 	err = extractEmbeddedBinaries(files)
 	fmt.Printf("files extracted to %s\n", binaryDir)
 	return err
 }
 
 func extractWindowsEmbeddedBinaries() (err error) {
-	files := []string{"cygwin1.dll", "iperf3.exe"}
+	files := []string{"cygwin1.dll", "cygcrypto-1.1.dll", "cygz.dll", "iperf3.exe"}
 	err = extractEmbeddedBinaries(files)
 	binaryLocation = path.Join(binaryDir, "iperf3.exe")
 	return err
