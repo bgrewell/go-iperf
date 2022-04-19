@@ -10,10 +10,6 @@ import (
 	"time"
 )
 
-
-//TODO: This has not been tested on OS X ... my assumption is it is the exact same as linux but if it's not then the
-//      reporting will be broken
-
 /*
 Connecting to host 10.254.100.100, port 5201
 [  4] local 192.168.3.182 port 54104 connected to 10.254.100.100 port 5201
