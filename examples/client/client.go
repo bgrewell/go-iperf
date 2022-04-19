@@ -24,6 +24,8 @@ func main() {
 	c.SetJSON(true)
 	c.SetIncludeServer(false)
 	c.SetStreams(1)
+
+	// Uncomment the below to get live results
 	//reports := c.SetModeLive()
 
 	//go func() {

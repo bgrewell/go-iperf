@@ -13,7 +13,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	cc.Port = 6801 //Note: this is just a hack because we start a listener on the port when we get a new controller and in this case since we are on the same pc we would have a port conflict so we start our listener on the port+1 and then fix that after the listener has started since we won't use it anyway
+	cc.Port = 6801 // Note: this is just a hack because we start a listener on the port when we get a new controller and
+	// in this case since we are on the same pc we would have a port conflict so we start our listener on
+	// the port+1 and then fix that after the listener has started since we won't use it anyway
 
 	// Second create a controller for the "server" side (again would normally be on a different computer)
 	sc, err := iperf.NewController(6801)
@@ -33,7 +35,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	<- iperfCli.Done
+	<-iperfCli.Done
 
 	fmt.Println(iperfCli.Report().String())
 }

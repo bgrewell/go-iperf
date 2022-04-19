@@ -1,5 +1,7 @@
 # go-iperf
-A Go based wrapper around iperf3
+
+This project is a simple wrapper around iperf3 designed to make it easier to programmatically run iperf tests inside of
+Go projects. This project supports Windows, Linux and MacOS. 
 
 ## Basic Usage
 
@@ -73,9 +75,4 @@ func main() {
 	
 	fmt.Println(c.Report().String())
 }
-```
-
-building binary data package with iperf binaries
-```
-go-bindata -pkg iperf -prefix "embedded/" embedded/
 ```

@@ -1,11 +1,8 @@
 package main
 
 import (
-//"fmt"
-   "github.com/BGrewell/go-conversions"
-//"github.com/BGrewell/go-iperf"
-//"time"
 	"fmt"
+	"github.com/BGrewell/go-conversions"
 	"github.com/BGrewell/go-iperf"
 	"time"
 )
