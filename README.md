@@ -37,7 +37,7 @@ func main() {
         os.Exit(-1)
     }
     
-    for s.Running() {
+    for s.Running {
     	time.Sleep(100 * time.Millisecond)
     }
     
